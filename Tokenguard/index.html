@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TokenGuard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="sidebar" aria-label="TokenGuard navigation">
+        <div class="brand">
+          <div class="brand-mark">TG</div>
+          <div>
+            <h1>TokenGuard</h1>
+            <p>LLM spend control</p>
+          </div>
+        </div>
+        <nav>
+          <a class="active" href="#overview">Overview</a>
+          <a href="#simulator">Router</a>
+          <a href="#requests">Requests</a>
+          <a href="#insights">Insights</a>
+        </nav>
+        <div class="sidebar-panel">
+          <span>Projected monthly waste</span>
+          <strong id="monthlyWaste">$0</strong>
+          <p>Based on duplicate prompts and avoidable premium model usage.</p>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Production cockpit</p>
+            <h2>LLM cost, latency, routing, and cache analytics</h2>
+          </div>
+          <button id="seedDataButton" class="icon-button" type="button" title="Refresh sample traffic">
+            <span aria-hidden="true">↻</span>
+            <span class="sr-only">Refresh sample traffic</span>
+          </button>
+        </header>
+
+        <section id="overview" class="metric-grid" aria-label="Key metrics">
+          <article class="metric">
+            <span>Total spend</span>
+            <strong id="totalSpend">$0.00</strong>
+            <small id="spendDelta">Across all logged calls</small>
+          </article>
+          <article class="metric">
+            <span>Cost per 1K calls</span>
+            <strong id="costPerThousand">$0.00</strong>
+            <small>Normalized API-call cost</small>
+          </article>
+          <article class="metric">
+            <span>Token efficiency</span>
+            <strong id="tokenEfficiency">0%</strong>
+            <small>Useful output / total tokens</small>
+          </article>
+          <article class="metric">
+            <span>Cache hit rate</span>
+            <strong id="cacheHitRate">0%</strong>
+            <small id="cacheSavings">$0 saved</small>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <section id="simulator" class="panel router-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Smart router</p>
+                <h3>Send a request</h3>
+              </div>
+              <label class="toggle">
+                <input id="cacheToggle" type="checkbox" checked />
+                <span>Semantic cache</span>
+              </label>
+            </div>
+            <form id="requestForm">
+              <div class="form-row">
+                <label for="featureInput">Feature</label>
+                <select id="featureInput">
+                  <option>Support Copilot</option>
+                  <option>Sales Email Writer</option>
+                  <option>Code Review Assistant</option>
+                  <option>Research Agent</option>
+                  <option>Data Analyst</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="teamInput">Team</label>
+                <select id="teamInput">
+                  <option>Customer Ops</option>
+                  <option>Growth</option>
+                  <option>Engineering</option>
+                  <option>Product</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="promptInput">Prompt</label>
+                <textarea id="promptInput" rows="7" placeholder="Summarize this support thread and draft a customer-safe reply."></textarea>
+              </div>
+              <button class="primary-button" type="submit">
+                <span aria-hidden="true">▶</span>
+                Route request
+              </button>
+            </form>
+          </section>
+
+          <section class="panel decision-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Latest decision</p>
+                <h3 id="decisionTitle">Waiting for traffic</h3>
+              </div>
+              <span id="decisionBadge" class="badge">Idle</span>
+            </div>
+            <div class="decision-body">
+              <dl>
+                <div>
+                  <dt>Model</dt>
+                  <dd id="decisionModel">-</dd>
+                </div>
+                <div>
+                  <dt>Complexity</dt>
+                  <dd id="decisionComplexity">-</dd>
+                </div>
+                <div>
+                  <dt>Estimated cost</dt>
+                  <dd id="decisionCost">$0.00</dd>
+                </div>
+                <div>
+                  <dt>Latency</dt>
+                  <dd id="decisionLatency">0 ms</dd>
+                </div>
+              </dl>
+              <div class="routing-rule">
+                <span>Routing rule</span>
+                <p id="decisionReason">Simple, short prompts use a low-cost model; long or reasoning-heavy work gets routed upward.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="content-grid lower-grid">
+          <section id="requests" class="panel table-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Request ledger</p>
+                <h3>Recent calls</h3>
+              </div>
+              <button id="clearButton" class="secondary-button" type="button">Clear</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Feature</th>
+                    <th>Team</th>
+                    <th>Model</th>
+                    <th>Tokens</th>
+                    <th>Cost</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="requestTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="insights" class="panel insight-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Waste detector</p>
+                <h3>Optimization queue</h3>
+              </div>
+            </div>
+            <div id="insightList" class="insight-list"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

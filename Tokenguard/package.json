@@ -1,0 +1,10 @@
+{
+  "name": "tokenguard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LLM cost and routing optimizer MVP dashboard.",
+  "scripts": {
+    "dev": "npx serve . -l 5173",
+    "check": "node --check app.js"
+  }
+}
